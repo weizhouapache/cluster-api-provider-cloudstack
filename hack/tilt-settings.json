@@ -1,5 +1,5 @@
 {
-    "default_registry": "public.ecr.aws/a4z9h2b1/cluster-api-provider-capc",
+    "default_registry": "localhost:5050",
     "provider_repos": [
         ".."
     ],
@@ -8,5 +8,14 @@
         "kubeadm-bootstrap",
         "kubeadm-control-plane"
     ],
-    "kind_cluster_name": "capi-test"
+    "kind_cluster_name": "capi-test",
+    "kustomize_substitutions": {
+        "CLOUDSTACK_B64ENCODED_CREDENTIALS": "RANDOM_STRING=="
+    },
+    "debug": {
+        "cloudstack": {
+            "continue": true,
+            "port": 30000
+        }
+    }
 }
