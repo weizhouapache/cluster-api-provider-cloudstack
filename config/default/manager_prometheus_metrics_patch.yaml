@@ -15,5 +15,5 @@ spec:
       - name: manager
         ports:
         - containerPort: 8080
-          name: metrics
+          name: prom-metrics
           protocol: TCP
