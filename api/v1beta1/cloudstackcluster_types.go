@@ -25,7 +25,7 @@ import (
 
 const (
 	ClusterFinalizer           = "cloudstackcluster.infrastructure.cluster.x-k8s.io"
-	CloudStackClusterLabelName = "cloudstackcluster.infrastructure.cluster.x-k8s.io/name"
+	CloudStackClusterNameLabel = "cloudstackcluster.infrastructure.cluster.x-k8s.io/name"
 	NetworkTypeIsolated        = "Isolated"
 	NetworkTypeShared          = "Shared"
 )

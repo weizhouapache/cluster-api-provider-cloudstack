@@ -162,7 +162,7 @@ func (r *ReconciliationRunner) Else(fn CloudStackReconcilerMethod) CloudStackRec
 // GetCAPICluster gets the CAPI cluster the reconciliation subject belongs to.
 func (r *ReconciliationRunner) GetCAPICluster() (ctrl.Result, error) {
 	r.Log.V(1).Info("Getting CAPI cluster.")
-	name := r.ReconciliationSubject.GetLabels()[clusterv1.ClusterLabelName]
+	name := r.ReconciliationSubject.GetLabels()[clusterv1.ClusterNameLabel]
 	if name == "" {
 		r.Log.V(1).Info("Reconciliation Subject is missing cluster label or cluster does not exist. Skipping CAPI Cluster fetch.",
 			"SubjectKind", r.ReconciliationSubject.GetObjectKind().GroupVersionKind().Kind)
@@ -184,7 +184,7 @@ func (r *ReconciliationRunner) GetCAPICluster() (ctrl.Result, error) {
 // GetCSCluster gets the CAPI cluster the reconciliation subject belongs to.
 func (r *ReconciliationRunner) GetCSCluster() (ctrl.Result, error) {
 	r.Log.V(1).Info("Getting CloudStackCluster cluster.")
-	name := r.ReconciliationSubject.GetLabels()[clusterv1.ClusterLabelName]
+	name := r.ReconciliationSubject.GetLabels()[clusterv1.ClusterNameLabel]
 	if name == "" {
 		r.Log.V(1).Info("Reconciliation Subject is missing cluster label or cluster does not exist. Skipping CloudStackCluster fetch.",
 			"SubjectKind", r.ReconciliationSubject.GetObjectKind().GroupVersionKind().Kind)
@@ -481,7 +481,7 @@ func (r *ReconciliationRunner) NewChildObjectMeta(name string) metav1.ObjectMeta
 	return metav1.ObjectMeta{
 		Name:      strings.ToLower(name),
 		Namespace: r.Request.Namespace,
-		Labels:    map[string]string{clusterv1.ClusterLabelName: r.CAPICluster.Name},
+		Labels:    map[string]string{clusterv1.ClusterNameLabel: r.CAPICluster.Name},
 		OwnerReferences: []metav1.OwnerReference{
 			*metav1.NewControllerRef(r.ReconciliationSubject, ownerGVK),
 		},
