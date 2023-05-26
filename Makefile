@@ -65,6 +65,8 @@ else
 GOBIN=$(shell go env GOBIN)
 endif
 
+ARCH ?= $(shell go env GOARCH)
+
 # Setting SHELL to bash allows bash commands to be executed by recipes.
 # This is a requirement for 'setup-envtest.sh' in the test target.
 # Options are set to exit when a recipe line exits non-zero or a piped command fails.
@@ -181,13 +183,6 @@ build: binaries generate-deepcopy lint generate-manifests release-manifests ## B
 $(BIN_DIR)/manager: $(MANAGER_BIN_INPUTS)
 	go build -o $(BIN_DIR)/manager main.go
 
-.PHONY: build-for-docker
-build-for-docker: $(BIN_DIR)/manager-linux-amd64 ## Build manager binary for docker image building.
-$(BIN_DIR)/manager-linux-amd64: $(MANAGER_BIN_INPUTS)
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    	go build -a -ldflags "${ldflags} -extldflags '-static'" \
-    	-o $(BIN_DIR)/manager-linux-amd64 main.go
-
 .PHONY: run
 run: generate-deepcopy generate-conversion ## Run a controller from your host.
 	go run ./main.go
@@ -213,10 +208,11 @@ undeploy: $(KUSTOMIZE) ## Undeploy controller from the K8s cluster specified in 
 
 # Using a flag file here as docker build doesn't produce a target file.
 DOCKER_BUILD_INPUTS=$(MANAGER_BIN_INPUTS) Dockerfile
+export DOCKER_BUILDKIT=1
 .PHONY: docker-build
-docker-build: generate-deepcopy generate-conversion build-for-docker .dockerflag.mk ## Build docker image containing the controller manager.
+docker-build: generate-deepcopy generate-conversion .dockerflag.mk ## Build docker image containing the controller manager.
 .dockerflag.mk: $(DOCKER_BUILD_INPUTS)
-	docker build -t ${IMG} .
+	docker build --build-arg ARCH=${ARCH} --build-arg LDFLAGS="${LDFLAGS}" -t ${IMG} .
 	@touch .dockerflag.mk
 
 .PHONY: docker-push
