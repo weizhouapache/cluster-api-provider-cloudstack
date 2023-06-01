@@ -60,7 +60,7 @@
     clusterctl get kubeconfig capc-cluster > capc-cluster.kubeconfig
     ```
 
-6. Install calico on the workload cluster so that pods can see each other
+6. Install weave net cni plugin on the workload cluster so that pods can see each other
     ```
     KUBECONFIG=capc-cluster.kubeconfig kubectl apply -f https://raw.githubusercontent.com/weaveworks/weave/master/prog/weave-kube/weave-daemonset-k8s-1.11.yaml
     ```
