@@ -62,7 +62,7 @@
 
 6. Install calico on the workload cluster so that pods can see each other
     ```
-    KUBECONFIG=capc-cluster.kubeconfig kubectl apply -f https://projectcalico.docs.tigera.io/manifests/calico.yaml
+    KUBECONFIG=capc-cluster.kubeconfig kubectl apply -f https://raw.githubusercontent.com/weaveworks/weave/master/prog/weave-kube/weave-daemonset-k8s-1.11.yaml
     ```
 
 7. Verify the K8s cluster is fully up.  (It may take a minute for the nodes status to all reach *ready* state.)
